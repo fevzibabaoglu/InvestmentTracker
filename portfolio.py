@@ -16,6 +16,8 @@ class FundPortfolio:
     def __call__(self) -> dict[str, Union[str, float, dict[str, Fund]]]:
         return {
             'name': self.name,
+            'profit': round(self.getTotalProfit(), 6),
+            'profitPercentage': round(self.getTotalProfit() / self.getTotalBoughtSharePrice() * 100, 6),
             'funds': {code: fund() for code, fund in self.funds.items()},
         }
     
@@ -28,8 +30,11 @@ class FundPortfolio:
     def getTotalShares(self) -> int:
         return sum(fund.getTotalShares() for fund in self.funds.values())
 
-    def getTotalPriceGain(self) -> float:
-        return sum(fund.getTotalPriceGain() for fund in self.funds.values())
+    def getTotalProfit(self) -> float:
+        return sum(fund.getTotalProfit() for fund in self.funds.values())
+    
+    def getTotalBoughtSharePrice(self) -> float:
+        return sum(fund.getTotalBoughtSharePrice() for fund in self.funds.values())
 
     def dailyChangeUpdate(self) -> None:
         for fund in self.funds.values():

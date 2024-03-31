@@ -23,6 +23,8 @@ class Fund:
             'code': self.code,
             'label': self.label,
             'price': round(self.price, 6),
+            'profit': round(self.getTotalProfit(), 6),
+            'profitPercentage': round(self.getTotalProfit() / self.getTotalBoughtSharePrice() * 100, 6),
             'date': self.date,
             'changes': [change() for change in self.changes],
         }
@@ -65,15 +67,26 @@ class Fund:
     def getTotalShares(self) -> int:
         return sum(change.shareChange for change in self.changes)
 
-    def getTotalPriceGain(self) -> float:
-        price = 0
+    def getTotalProfit(self) -> float:
+        profit = 0
         share = 0
 
         for change in self.changes:
-            price += share * change.priceChange
+            profit += share * change.priceChange
             share += change.shareChange
 
-        return price
+        return profit
+    
+    def getTotalBoughtSharePrice(self) -> float:
+        price = self.price
+        totalPrice = 0
+
+        for change in self.changes:
+            price += change.priceChange
+            totalPrice += change.shareChange * price
+
+        return totalPrice
+
     
     def dailyChangeUpdate(self) -> None:
         dateStart = datetime.strptime(self.date.split("_")[0], "%Y-%m-%d")

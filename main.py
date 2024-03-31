@@ -17,7 +17,8 @@ def main():
 
     # print(portfolio)
     # print(portfolio.getTotalShares())
-    # print(portfolio.getTotalPriceGain())
+    # print(portfolio.getTotalProfit())
+    # print(portfolio.getTotalBoughtSharePrice())
 
 
         
