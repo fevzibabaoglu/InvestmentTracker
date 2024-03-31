@@ -31,7 +31,7 @@ class FundPortfolio:
         return sum(fund.getTotalShares() for fund in self.funds.values())
 
     def getTotalProfit(self) -> float:
-        return sum(fund.getProfit() for fund in self.funds.values())
+        return sum(fund.getTotalProfit() for fund in self.funds.values())
         
     def getTotalProfitPercentage(self) -> float:
         totalBoughtSharePrice = self.getTotalBoughtSharePrice()
@@ -43,6 +43,17 @@ class FundPortfolio:
     
     def getTotalBoughtSharePrice(self) -> float:
         return sum(fund.getTotalBoughtSharePrice() for fund in self.funds.values())
+    
+    def getTotalValue(self) -> float:
+        valueList = self.getValueList()
+
+        if len(valueList) == 0:
+            return 0.0
+
+        return valueList[-1]
+
+    def getValueList(self) -> list[float]:
+        return [sum(valueTuple) for valueTuple in zip(*[fund.getValueList() for fund in self.funds.values()])]
 
     def dailyChangeUpdate(self) -> None:
         for fund in self.funds.values():

@@ -23,7 +23,7 @@ class Fund:
             'code': self.code,
             'label': self.label,
             'price': round(self.price, 6),
-            'profit': round(self.getProfit(), 6),
+            'profit': round(self.getTotalProfit(), 6),
             'profitPercentage': round(self.getProfitPercentage() * 100, 6),
             'date': self.date,
             'changes': [change() for change in self.changes],
@@ -67,15 +67,18 @@ class Fund:
     def getTotalShares(self) -> int:
         return sum(change.shareChange for change in self.changes)
 
-    def getProfit(self) -> float:
-        profit = 0
+    def getTotalProfit(self) -> float:
+        return sum(self.getProfitList())
+    
+    def getProfitList(self) -> list[float]:
+        profits = []
         share = 0
 
         for change in self.changes:
-            profit += share * change.priceChange
+            profits.append(share * change.priceChange)
             share += change.shareChange
 
-        return profit
+        return profits
     
     def getProfitPercentage(self) -> float:
         totalBoughtSharePrice = self.getTotalBoughtSharePrice()
@@ -83,7 +86,7 @@ class Fund:
         if totalBoughtSharePrice == 0:
             return 0.0
 
-        return self.getProfit() / totalBoughtSharePrice * 100
+        return self.getTotalProfit() / totalBoughtSharePrice * 100
     
     def getTotalBoughtSharePrice(self) -> float:
         price = self.price
@@ -94,8 +97,27 @@ class Fund:
             totalPrice += change.shareChange * price
 
         return totalPrice
-
     
+    def getTotalValue(self) -> float:
+        valueList = self.getValueList()
+
+        if len(valueList) == 0:
+            return 0.0
+
+        return valueList[-1]
+
+    def getValueList(self) -> list[float]:
+        values = []
+        price = self.price
+        share = 0
+
+        for change in self.changes:
+            price += change.priceChange
+            share += change.shareChange
+            values.append(share * price)
+
+        return values
+
     def dailyChangeUpdate(self) -> None:
         dateStart = datetime.strptime(self.date.split("_")[0], "%Y-%m-%d")
         dayDifference = (datetime.now() - dateStart).days
