@@ -22,7 +22,7 @@ class Fund:
         return {
             'code': self.code,
             'label': self.label,
-            'price': self.price,
+            'price': round(self.price, 6),
             'date': self.date,
             'changes': [change() for change in self.changes],
         }
@@ -89,8 +89,8 @@ class Fund:
 
         dailyChange = FundChange()
         dailyChange.daySinceStart = dayDifference
-        dailyChange.priceChange = round(priceDifference, 6)
-        dailyChange.profitPercentageSinceLastChange = round(priceDifferencePercentage, 6)
+        dailyChange.priceChange = priceDifference
+        dailyChange.profitPercentageSinceLastChange = priceDifferencePercentage
 
         if dayDifference % PERCENTAGE_MOD == 0:
             dailyChange.oneMonthProfitPercentage = webData['oneMonthProfitPercentage']
@@ -135,17 +135,17 @@ class FundChange:
     def __call__(self) -> dict[str, Union[int, float]]:
         fundChangeJson = {
             'daySinceStart': self.daySinceStart,
-            'priceChange': self.priceChange,
+            'priceChange': round(self.priceChange, 6),
             'shareChange': self.shareChange,
-            'profitPercentageSinceLastChange': self.profitPercentageSinceLastChange,
+            'profitPercentageSinceLastChange': round(self.profitPercentageSinceLastChange, 6),
         }
 
         if self.daySinceStart % PERCENTAGE_MOD == 0:
             fundChangeJson.update({
-                'oneMonthProfitPercentage': self.oneMonthProfitPercentage,
-                'threeMonthsProfitPercentage': self.threeMonthsProfitPercentage,
-                'sixMonthsProfitPercentage': self.sixMonthsProfitPercentage,
-                'oneYearProfitPercentage': self.oneYearProfitPercentage,
+                'oneMonthProfitPercentage': round(self.oneMonthProfitPercentage, 6),
+                'threeMonthsProfitPercentage': round(self.threeMonthsProfitPercentage, 6),
+                'sixMonthsProfitPercentage': round(self.sixMonthsProfitPercentage, 6),
+                'oneYearProfitPercentage': round(self.oneYearProfitPercentage, 6),
             })
 
         return fundChangeJson
