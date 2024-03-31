@@ -17,7 +17,7 @@ class FundPortfolio:
         return {
             'name': self.name,
             'profit': round(self.getTotalProfit(), 6),
-            'profitPercentage': round(self.getTotalProfit() / self.getTotalBoughtSharePrice() * 100, 6),
+            'profitPercentage': round(self.getTotalProfitPercentage(), 6),
             'funds': {code: fund() for code, fund in self.funds.items()},
         }
     
@@ -31,7 +31,15 @@ class FundPortfolio:
         return sum(fund.getTotalShares() for fund in self.funds.values())
 
     def getTotalProfit(self) -> float:
-        return sum(fund.getTotalProfit() for fund in self.funds.values())
+        return sum(fund.getProfit() for fund in self.funds.values())
+        
+    def getTotalProfitPercentage(self) -> float:
+        totalBoughtSharePrice = self.getTotalBoughtSharePrice()
+
+        if totalBoughtSharePrice == 0:
+            return 0.0
+
+        return self.getTotalProfit() / totalBoughtSharePrice * 100
     
     def getTotalBoughtSharePrice(self) -> float:
         return sum(fund.getTotalBoughtSharePrice() for fund in self.funds.values())
