@@ -1,24 +1,24 @@
-from fund import Fund
+from portfolio import FundPortfolio
 
 
 def main():
-    ykt = Fund('ykt')
-    # yas = Fund('yas')
-    # yay = Fund('yay')
-    # ybe = Fund('ybe')
+    portfolio = FundPortfolio('yapikredi')
 
-    ykt.loadFromWeb()
-    # yas.loadFromWeb()
-    # yay.loadFromWeb()
-    # ybe.loadFromWeb()
+    # portfolio.addFund('ykt')
+    # portfolio.addFund('yas')
+    # portfolio.addFund('yay')
+    # portfolio.addFund('ybe')
+    # portfolio.loadFundsFromWeb()
+    # portfolio.saveToJson()
 
-    ykt.saveToJson()
-    # ykt.loadFromJson()
+    portfolio.loadFromJson()
+    portfolio.dailyChangeUpdate()
+    portfolio.saveToJson()
 
-    print(ykt)
-    # print(yas)
-    # print(yay)
-    # print(ybe)
+    # print(portfolio)
+    # print(portfolio.getTotalShares())
+    # print(portfolio.getTotalPriceGain())
+
 
         
 if __name__ == "__main__":
