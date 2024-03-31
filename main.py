@@ -2,7 +2,7 @@ from portfolio import FundPortfolio
 
 
 def main():
-    portfolio = FundPortfolio('yapikredi')
+    portfolio = FundPortfolio('test')
 
     # portfolio.addFund('ykt')
     # portfolio.addFund('yas')
