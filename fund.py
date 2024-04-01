@@ -24,7 +24,7 @@ class Fund:
             'label': self.label,
             'price': round(self.price, 6),
             'profit': round(self.getTotalProfit(), 6),
-            'profitPercentage': round(self.getProfitPercentage() * 100, 6),
+            'profitPercentage': round(self.getProfitPercentage(), 6),
             'date': self.date,
             'changes': [change() for change in self.changes],
         }
